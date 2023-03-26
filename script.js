@@ -14,12 +14,14 @@ function searchMeal(e) {
 
     // Get Search Meals
     const term = search.value;
+    console.log({ term })
 
     // Cheack for Empty
     if (term.trim()) {
         fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`)
-            .then((res) => res.json)
+            .then((res) => res.json())
             .then((data) => {
+                console.log({ data })
                 resultHeading.innerHTML = `<h2>Search result for ${term}`
                 if (data.meals === null) {
                     resultHeading.innerHTML = `<h2>The are no result for ${term}`
@@ -37,19 +39,26 @@ function searchMeal(e) {
                         .join("");
                 }
             })
+            .catch(error => {
+
+            });
 
     } else {
         alert('please insart a value in Search')
     }
 }
 
-// Fetch meal by id
+// fetch meal by ids
+
 function getMealById(mealID) {
+    console.log({ mealID });
     fetch(
         `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`
     ).then(res => res.json())
         .then(data => {
+            console.log({ data })
             const meal = data.meals[0];
+            console.log({ meal });
             addMealToDOM(meal)
         });
 }
@@ -95,10 +104,9 @@ mealEl.addEventListener('click', e => {
         mealInfo = item;
     } else {
         mealInfo = false;
-        if (mealInfo) {
-            const mealID = mealInfo.dataset["mealid"];
-            getMealById(mealID)
-
-        }
+    }
+    if (mealInfo) {
+        const mealID = mealInfo.dataset["mealid"];
+        getMealById(mealID)
     }
 })
